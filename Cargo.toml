@@ -1,0 +1,25 @@
+[package]
+name = "teloxide-rocksdb"
+version = "0.1.0"
+edition = "2021"
+description = "The RocksDB dialogue storage support for `teloxide`"
+repository = "https://github.com/teloxide/teloxide-rocksdb"
+documentation = "https://docs.rs/teloxide-rocksdb/"
+readme = "README.md"
+keywords = ["teloxide", "telegram", "telegram-bot", "telegram-bot-api"]
+categories = ["web-programming", "asynchronous"]
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+teloxide = { version = "0.11", default-features = false }
+teloxide-core = { version = "0.8.0", default-features = false }
+thiserror = "1.0"
+futures = "0.3"
+serde = { version = "1.0", features = [ "derive" ] }
+rocksdb = { version = "0.19", default-features = false, features = [ "lz4" ] }
+
+[dev-dependencies]
+tokio = { version = "1.8", features = [ "fs", "rt-multi-thread", "macros" ] }
+teloxide = { features = [ "cbor-serializer", "bincode-serializer" ] }
