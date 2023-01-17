@@ -13,8 +13,8 @@ license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-teloxide = { version = "0.11", default-features = false }
-teloxide-core = { version = "0.8.0", default-features = false }
+teloxide = { version = "0.12", default-features = false }
+teloxide-core = { version = "0.9", default-features = false }
 thiserror = "1.0"
 futures = "0.3"
 serde = { version = "1.0", features = [ "derive" ] }
