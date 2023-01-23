@@ -40,6 +40,8 @@ where
 }
 
 impl<S> RocksDbStorage<S> {
+    /// Creates a new [`RocksDbStorage`] with the given `path`, `serializer`,
+    /// and `options`.
     pub async fn open(
         path: &str,
         serializer: S,
