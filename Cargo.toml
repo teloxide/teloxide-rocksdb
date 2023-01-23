@@ -22,4 +22,4 @@ rocksdb = { version = "0.19", default-features = false, features = [ "lz4" ] }
 
 [dev-dependencies]
 tokio = { version = "1.8", features = [ "fs", "rt-multi-thread", "macros" ] }
-teloxide = { features = [ "cbor-serializer", "bincode-serializer" ] }
+teloxide = { version = "0.12", features = [ "cbor-serializer", "bincode-serializer" ] }

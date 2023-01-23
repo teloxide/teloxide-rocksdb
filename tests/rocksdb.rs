@@ -57,29 +57,26 @@ async fn test_rocksdb_cbor() {
 
 type Dialogue = String;
 
-macro_rules! test_dialogues {
-    ($storage:expr, $_0:expr, $_1:expr, $_2:expr) => {
-        assert_eq!(Arc::clone(&$storage).get_dialogue(ChatId(1)).await.unwrap(), $_0);
-        assert_eq!(Arc::clone(&$storage).get_dialogue(ChatId(11)).await.unwrap(), $_1);
-        assert_eq!(Arc::clone(&$storage).get_dialogue(ChatId(256)).await.unwrap(), $_2);
-    };
-}
-
 async fn test_rocksdb<S>(storage: Arc<RocksDbStorage<S>>)
 where
     S: Send + Sync + Serializer<Dialogue> + 'static,
     <S as Serializer<Dialogue>>::Error: Debug + Display,
 {
-    test_dialogues!(storage, None, None, None);
+    assert_eq!(Arc::clone(&storage).get_dialogue(ChatId(1)).await.unwrap(), None);
+    assert_eq!(Arc::clone(&storage).get_dialogue(ChatId(11)).await.unwrap(), None);
+    assert_eq!(Arc::clone(&storage).get_dialogue(ChatId(256)).await.unwrap(), None);
 
     Arc::clone(&storage).update_dialogue(ChatId(1), "ABC".to_owned()).await.unwrap();
     Arc::clone(&storage).update_dialogue(ChatId(11), "DEF".to_owned()).await.unwrap();
     Arc::clone(&storage).update_dialogue(ChatId(256), "GHI".to_owned()).await.unwrap();
 
-    test_dialogues!(
-        storage,
-        Some("ABC".to_owned()),
-        Some("DEF".to_owned()),
+    assert_eq!(Arc::clone(&storage).get_dialogue(ChatId(1)).await.unwrap(), Some("ABC".to_owned()));
+    assert_eq!(
+        Arc::clone(&storage).get_dialogue(ChatId(11)).await.unwrap(),
+        Some("DEF".to_owned())
+    );
+    assert_eq!(
+        Arc::clone(&storage).get_dialogue(ChatId(256)).await.unwrap(),
         Some("GHI".to_owned())
     );
 
@@ -87,7 +84,9 @@ where
     Arc::clone(&storage).remove_dialogue(ChatId(11)).await.unwrap();
     Arc::clone(&storage).remove_dialogue(ChatId(256)).await.unwrap();
 
-    test_dialogues!(storage, None, None, None);
+    assert_eq!(Arc::clone(&storage).get_dialogue(ChatId(1)).await.unwrap(), None);
+    assert_eq!(Arc::clone(&storage).get_dialogue(ChatId(11)).await.unwrap(), None);
+    assert_eq!(Arc::clone(&storage).get_dialogue(ChatId(256)).await.unwrap(), None);
 
     // Check that a try to remove a non-existing dialogue results in an error.
     assert!(matches!(
